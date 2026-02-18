@@ -15,7 +15,7 @@ export async function getUserSite(): Promise<QueryResponse<UserSiteRow>> {
   const { data, error } = await supabase
     .from("user_sites")
     .select("*")
-    .eq("user_id", userId)
+    .eq("user_id_supabase", userId)
     .single();
 
   if (error) {
