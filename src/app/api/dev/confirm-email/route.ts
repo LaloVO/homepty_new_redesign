@@ -4,7 +4,6 @@
  * ⚠️ ELIMINAR EN PRODUCCIÓN
  */
 
-import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -31,7 +30,7 @@ export async function POST(request: Request) {
             ]
         }, { status: 400 });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({
             ok: false,
             error: "Error al procesar la solicitud"

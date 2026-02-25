@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Progress } from "../ui/progress";
 const locationData = [
   {
     city: "Madrid",

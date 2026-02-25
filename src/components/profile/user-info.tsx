@@ -11,6 +11,7 @@ import { ErrorMessage } from "../shared";
 import { STATES_NAMES_BY_ID } from "@/utils/formatters";
 import { QueryResponse, User } from "@/types";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 interface Props {
   userPromise: Promise<QueryResponse<User>>;
@@ -41,10 +42,12 @@ export async function UserInfo({ userPromise }: Props) {
         <div className="flex justify-between items-end -mt-10 mb-3">
           <div className="relative">
             <div className="w-20 h-20 rounded-xl bg-white p-1 shadow-md shadow-gray-200/40 border border-gray-100">
-              <img
+              <Image
                 alt={user.nombre_usuario ?? "Profile"}
                 className="w-full h-full object-cover rounded-lg"
                 src={user.imagen_perfil_usuario ?? "/images/placeholder.svg"}
+                width={80}
+                height={80}
               />
             </div>
             <div className="absolute -bottom-1.5 -right-1.5 bg-white rounded-full p-0.5 shadow-sm border border-gray-100 flex items-center justify-center">
@@ -116,7 +119,7 @@ export async function UserInfo({ userPromise }: Props) {
         {user.descripcion_usuario && (
           <div className="mt-4 pt-4 border-t border-gray-100/60">
             <p className="text-xs text-gray-500 leading-relaxed max-w-2xl italic font-medium">
-              "{user.descripcion_usuario}"
+              &quot;{user.descripcion_usuario}&quot;
             </p>
           </div>
         )}

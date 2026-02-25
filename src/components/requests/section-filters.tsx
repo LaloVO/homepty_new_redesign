@@ -2,11 +2,9 @@
 
 import { ChangeEvent } from "react";
 import { TYPES_OF_PROPERTIES, TYPES_STATUS_REQUEST } from "@/utils/constants";
-import { Label } from "../ui/label";
 import { NativeSelect, NativeSelectOption } from "../ui/native-select";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SparklesIcon, ChevronDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { SparklesIcon } from "lucide-react";
 
 export function SectionFilters() {
   const searchParams = useSearchParams();

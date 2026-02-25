@@ -1,7 +1,6 @@
-import { SectionLeft, SectionRight } from "@/components/property/unit";
+import { PropertyViewLayout } from "@/components/property/view/property-view-layout";
 import { ErrorMessage } from "@/components/shared";
 import { getPropertyById } from "@/server/queries";
-import Image from "next/image";
 export default async function PropertiesUnitViewPage({
   params,
 }: {
@@ -20,32 +19,6 @@ export default async function PropertiesUnitViewPage({
       ? unit.imagenes_propiedades[0].image_url
       : "/images/placeholder.svg";
   return (
-    <section className="flex flex-col gap-y-6">
-      {/** Seccion de imagenes */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Imagen principal */}
-        <div className="min-h-96 w-full col-span-2 relative">
-          <Image
-            src={mainImage}
-            alt="Main image"
-            layout="fill"
-            objectFit="cover"
-            loading="eager"
-          />
-        </div>
-        {/** Imagenes secundarias */}
-        <div className="w-full h-full flex flex-col gap-y-4">
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-        </div>
-      </div>
-      {/** Seccion de informacion */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Section left */}
-        <SectionLeft unit={unit} />
-        {/** Section right */}
-        <SectionRight unit={unit} />
-      </div>
-    </section>
+    <PropertyViewLayout property={unit} />
   );
 }

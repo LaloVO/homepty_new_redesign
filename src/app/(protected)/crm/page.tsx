@@ -13,9 +13,6 @@ import {
   EyeIcon,
   HouseIcon,
   LayersIcon,
-  FilterIcon,
-  ChevronDownIcon,
-  BellIcon
 } from "lucide-react";
 import { useAppShell } from "@/components/layout/app-shell";
 import { CopilotAI } from "@/components/layout/copilot-ai";

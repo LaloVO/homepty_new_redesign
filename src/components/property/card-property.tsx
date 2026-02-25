@@ -31,7 +31,7 @@ export function CardProperty({ property }: Props) {
     <article className="group relative bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full">
       {/* Image Container */}
       <div className="relative h-40 w-full overflow-hidden shrink-0">
-        <Link href={`/property/${property.id}`} className="block h-full w-full">
+        <Link href={`/properties/${property.is_unit ? "unit" : "development"}/view/${property.id}`} className="block h-full w-full">
           <Image
             src={imageUrl}
             alt={property.nombre}

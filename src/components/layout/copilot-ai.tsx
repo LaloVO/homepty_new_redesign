@@ -6,11 +6,9 @@ import {
     XIcon,
     BotIcon,
     MicIcon,
-    SendIcon,
     ArrowUpIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 interface Message {
     id: string;

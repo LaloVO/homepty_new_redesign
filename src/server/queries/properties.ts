@@ -77,11 +77,15 @@ export async function getAllProperties({
   }
 
   // Fetch actions manually to join (missing FK workaround)
-  const { data: actions } = await supabase.from("accionespropiedades").select("*");
+  const { data: actions } = await supabase
+    .from("accionespropiedades")
+    .select("*");
 
-  const data = properties?.map((p: any) => ({
+  const data = properties?.map((p) => ({
     ...p,
-    accionespropiedades: actions?.find((a: any) => a.id_accion_propiedad === p.id_tipo_accion),
+    accionespropiedades: actions?.find(
+      (a) => a.id_accion_propiedad === p.id_tipo_accion
+    ),
   })) as PropertyWithImages[];
 
   return {

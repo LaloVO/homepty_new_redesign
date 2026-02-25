@@ -2,7 +2,6 @@
 
 import {
     SearchIcon,
-    PlusIcon,
     PanelRightCloseIcon,
     PanelRightOpenIcon,
     SparklesIcon
@@ -10,7 +9,6 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useAppShell } from "./app-shell";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface ModuleHeaderProps {

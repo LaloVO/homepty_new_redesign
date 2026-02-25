@@ -13,7 +13,7 @@ export async function POST(request: Request) {
             password,
             options: {
                 data: {
-                    nombre_usuario: nombre_usuario || email.split('@')[0],
+                    nombre_usuario: nombre_usuario || email.split("@")[0],
                 }
             }
         });
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
             user: data.user,
             message: "Usuario creado exitosamente"
         });
-    } catch (error) {
+    } catch {
         return NextResponse.json({
             ok: false,
             error: "Error al procesar la solicitud"

@@ -1,6 +1,6 @@
 "use client";
 
-import { BotIcon, ArrowRightIcon, SparklesIcon, LightbulbIcon } from "lucide-react";
+import { ArrowRightIcon, LightbulbIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function RequestsEmptyState() {

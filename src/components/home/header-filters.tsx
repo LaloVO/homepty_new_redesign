@@ -6,7 +6,6 @@ import { FilterIcon, PlusIcon } from "lucide-react";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { TYPES_OF_OPERATIONS, TYPES_OF_PROPERTIES } from "@/utils/constants";
 import Link from "next/link";
-import { useState } from "react";
 // Assuming there might be a Sheet or Dialog for "More Filters" or using the existing SectionMoreFilters 
 // but for now, the user just asked for the button "Mas Filtros".
 // If SectionMoreFilters is needed, we might need to lift state or use a Sheet. 

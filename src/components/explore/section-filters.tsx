@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { SearchIcon, PlusIcon, ChevronDownIcon, BellIcon } from "lucide-react";
+import { SearchIcon, PlusIcon, BellIcon } from "lucide-react";
 import { NativeSelect, NativeSelectOption } from "../ui/native-select";
 import { TYPES_OF_PROPERTIES } from "@/utils/constants";
 import { Input } from "../ui/input";

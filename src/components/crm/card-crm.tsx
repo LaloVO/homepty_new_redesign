@@ -90,6 +90,7 @@ export function CardCrm({
         </div>
 
         <div>
+          <div className="text-sm font-medium text-gray-600 mb-1">{title}</div>
           <div className="text-3xl font-bold text-gray-800">{quantity}</div>
           <p className="text-xs text-gray-500 mt-1">{description}</p>
         </div>

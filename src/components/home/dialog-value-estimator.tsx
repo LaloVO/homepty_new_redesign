@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,9 +19,6 @@ interface DialogValueEstimatorProps {
 export function DialogValueEstimator({ trigger }: DialogValueEstimatorProps) {
   const [open, setOpen] = useState(false);
 
-  const closeDialog = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

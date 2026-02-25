@@ -1,5 +1,5 @@
 import { AppShell } from "@/components/layout/app-shell";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 

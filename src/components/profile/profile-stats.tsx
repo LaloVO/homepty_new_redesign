@@ -1,16 +1,5 @@
 "use client";
 
-import {
-    ShieldCheckIcon,
-    PlusIcon,
-    Share2Icon,
-    Building2Icon,
-    OrbitIcon,
-    LayoutDashboardIcon,
-    RocketIcon,
-    BellIcon,
-    Edit2Icon
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ProfileStats() {

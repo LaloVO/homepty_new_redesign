@@ -3,7 +3,6 @@ import {
     MoreHorizontalIcon,
     BellIcon,
     SparklesIcon,
-    SearchIcon,
 } from "lucide-react";
 
 export function RightPanel() {

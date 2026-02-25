@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { QueryResponse, Request } from "@/types";
 
 export default async function RequestsPage(props: {
   searchParams?: Promise<{ status?: string; tipo_propiedad_id?: string; search?: string }>;
@@ -57,7 +58,7 @@ export default async function RequestsPage(props: {
   );
 }
 
-async function RequestsDataLayer({ requestsPromise }: { requestsPromise: any }) {
+async function RequestsDataLayer({ requestsPromise }: { requestsPromise: Promise<QueryResponse<Request[]>> }) {
   const response = await requestsPromise;
 
   if (!response.ok || !response.data || response.data.length === 0) {
