@@ -29,7 +29,19 @@ export function Map() {
       }
     });
 
+    // Observar cambios de tamaño del contenedor (sidebar collapse/expand)
+    // para que el mapa se redimensione automáticamente
+    const container = mapContainerRef.current;
+    let resizeObserver: ResizeObserver | undefined;
+    if (container) {
+      resizeObserver = new ResizeObserver(() => {
+        mapRef.current?.resize();
+      });
+      resizeObserver.observe(container);
+    }
+
     return () => {
+      resizeObserver?.disconnect();
       mapRef.current?.remove();
     };
   }, []);

@@ -23,5 +23,11 @@ export const UserSchema = z
       })
       .trim()
       .optional(),
+    imagen_perfil_usuario: z
+      .string()
+      .url({ message: "URL de imagen inválida" })
+      .optional()
+      .or(z.literal("")),
   })
   .required();
+

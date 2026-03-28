@@ -11,7 +11,12 @@ import {
 import { HandshakeIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { FormOffer } from "./form-offer";
-export function DialogOffers() {
+
+interface DialogOffersProps {
+  trigger?: React.ReactNode;
+}
+
+export function DialogOffers({ trigger }: DialogOffersProps) {
   const [open, setOpen] = useState(false);
 
   const closeDialog = useCallback(() => {
@@ -20,14 +25,18 @@ export function DialogOffers() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          type="button"
-          title="estimar valor"
-          size={"lg"}
-          variant={"outline"}
-        >
-          <HandshakeIcon className="text-green-600" /> Ofertas inmobiliarias
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            type="button"
+            title="estimar valor"
+            size={"lg"}
+            variant={"outline"}
+          >
+            <HandshakeIcon className="text-green-600" /> Ofertas inmobiliarias
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-full md:max-w-3xl max-h-[95dvh] overflow-y-auto">
         <DialogHeader>

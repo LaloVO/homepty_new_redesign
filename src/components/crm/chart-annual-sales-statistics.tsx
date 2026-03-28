@@ -1,6 +1,6 @@
 "use client";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -15,81 +15,78 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "An area chart with axes";
-
-const chartData = [
-  { month: "Enero", ventas: 186, alquileres: 80 },
-  { month: "Febrero", ventas: 305, alquileres: 200 },
-  { month: "Marzo", ventas: 237, alquileres: 120 },
-  { month: "Abril", ventas: 73, alquileres: 190 },
-  { month: "Mayo", ventas: 209, alquileres: 130 },
-  { month: "Junio", ventas: 214, alquileres: 140 },
-];
-
 const chartConfig = {
   ventas: {
-    label: "ventas",
-    color: "var(--chart-1)",
+    label: "Ventas",
+    color: "hsl(var(--chart-1))",
   },
   alquileres: {
-    label: "alquileres",
-    color: "var(--chart-2)",
+    label: "Alquileres",
+    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
 
-export function ChartAnnualSalesStatistics() {
+interface ChartAnnualSalesStatisticsProps {
+  chartData: Array<{
+    month: string;
+    ventas: number;
+    alquileres: number;
+  }>;
+}
+
+export function ChartAnnualSalesStatistics({ chartData }: ChartAnnualSalesStatisticsProps) {
+  const hasData = chartData.some((d) => d.ventas > 0 || d.alquileres > 0);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Ventas anuales</CardTitle>
-        <CardDescription>
-          Mostrando el total de ventas por mes a lo largo del año
-        </CardDescription>
+        <CardTitle>Estadísticas de ventas</CardTitle>
+        <CardDescription>Propiedades listadas en los últimos 6 meses</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-          <AreaChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: -20,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickCount={3}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Area
-              dataKey="alquileres"
-              type="natural"
-              fill={chartConfig.alquileres.color}
-              fillOpacity={0.4}
-              stroke={chartConfig.alquileres.color}
-              stackId="a"
-            />
-            <Area
-              dataKey="ventas"
-              type="natural"
-              fill={chartConfig.ventas.color}
-              fillOpacity={0.4}
-              stroke={chartConfig.ventas.color}
-              stackId="a"
-            />
-          </AreaChart>
-        </ChartContainer>
+        {!hasData ? (
+          <div className="flex items-center justify-center h-48 text-sm text-muted-foreground">
+            No hay datos suficientes para mostrar el gráfico
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig}>
+            <AreaChart
+              accessibilityLayer
+              data={chartData}
+              margin={{ left: 12, right: 12 }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="dot" />}
+              />
+              <Area
+                dataKey="alquileres"
+                type="natural"
+                fill="var(--color-alquileres)"
+                fillOpacity={0.4}
+                stroke="var(--color-alquileres)"
+                stackId="a"
+              />
+              <Area
+                dataKey="ventas"
+                type="natural"
+                fill="var(--color-ventas)"
+                fillOpacity={0.4}
+                stroke="var(--color-ventas)"
+                stackId="a"
+              />
+            </AreaChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
-};
+}

@@ -18,7 +18,7 @@ export async function getUserSite(): Promise<QueryResponse<UserSiteRow>> {
     .select("*")
     .eq("user_id_supabase", userId)
     .single();
-  
+
   console.log("[getUserSite] Query result:", { data, error });
 
   if (error) {

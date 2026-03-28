@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { OfferSchema } from "@/schemas";
 import { Offer } from "@/types";
 import { revalidatePath } from "next/cache";
+import { trackActivity } from "./activity-tracker";
 import z from "zod";
 
 export async function createOfferAction({ offer }: { offer: unknown }) {
@@ -40,6 +41,7 @@ export async function createOfferAction({ offer }: { offer: unknown }) {
     };
   }
   revalidatePath("/crm/offers");
+  trackActivity({ tipo_actividad: "oferta_creada", modulo: "crm", entidad_tipo: "oferta", metadata: { action: validatedFields.data.action, tipo_propiedad: validatedFields.data.tipo_propiedad } }).catch(() => { });
   return {
     ok: true,
     message: "Oferta creada exitosamente.",
@@ -89,6 +91,7 @@ export async function updateOfferAction({
     };
   }
   revalidatePath("/crm/offers");
+  trackActivity({ tipo_actividad: "oferta_actualizada", modulo: "crm", entidad_id: String(offerId), entidad_tipo: "oferta", metadata: { status: validatedFields.data.status } }).catch(() => { });
   return {
     ok: true,
     message: "Oferta actualizada exitosamente.",
@@ -113,6 +116,7 @@ export async function deleteOfferAction({ offerId }: { offerId: Offer["id"] }) {
     };
   }
   revalidatePath("/crm/offers");
+  trackActivity({ tipo_actividad: "oferta_eliminada", modulo: "crm", entidad_id: String(offerId), entidad_tipo: "oferta" }).catch(() => { });
   return {
     ok: true,
     message: "Oferta eliminada exitosamente.",

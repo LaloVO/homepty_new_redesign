@@ -1,8 +1,9 @@
 import { SidebarItem } from "@/types";
+
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     id: 1,
-    title: "Inicio",
+    title: "Dashboard",
     url: "/",
     icon: "home",
   },
@@ -26,14 +27,36 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     id: 5,
+    title: "Perfil",
+    url: "/profile",
+    icon: "profile",
+  },
+    {
+    id: 6,
     title: "Mi Sitio Web",
     url: "/my-site",
     icon: "globe",
   },
+];
+
+export interface AIToolItem {
+  id: number;
+  title: string;
+  url: string;
+  icon: string;
+}
+
+export const AI_TOOL_ITEMS: AIToolItem[] = [
   {
-    id: 6,
-    title: "Perfil",
-    url: "/profile",
-    icon: "profile",
+    id: 101,
+    title: "Predictor de Precio",
+    url: "#",
+    icon: "ai-predictor",
+  },
+  {
+    id: 102,
+    title: "Generador Renders",
+    url: "#",
+    icon: "ai-renders",
   },
 ];

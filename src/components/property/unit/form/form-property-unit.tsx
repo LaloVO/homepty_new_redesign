@@ -12,14 +12,28 @@ import { createUnitAction } from "@/server/actions";
 import { Confirm } from "./confirm";
 import { toast } from "sonner";
 import { LocationCharacteristicsStep } from "./location-characteristics-step";
+import { TaxonomyStep } from "./taxonomy-step";
 import { ButtonBack } from "@/components/shared";
 import { Card } from "@/components/ui/card";
+
+// Schema para el paso de taxonomía (campos opcionales, sin validación estricta)
+const TaxonomyStepSchema = z.object({
+  taxonomy_vertical_id: z.number().int().positive().nullable().optional(),
+  taxonomy_segment_id: z.number().int().positive().nullable().optional(),
+  taxonomy_subsegment_id: z.number().int().positive().nullable().optional(),
+  taxonomy_attributes: z.record(z.string(), z.string()).optional(),
+});
 
 const { useStepper, steps, utils } = defineStepper(
   {
     id: "basic-info",
     label: "Información básica",
     schema: BasicInfoPropertySchema,
+  },
+  {
+    id: "taxonomy",
+    label: "Clasificación",
+    schema: TaxonomyStepSchema,
   },
   {
     id: "location-characteristics",
@@ -70,6 +84,11 @@ export function FormPropertyUnit() {
       banios: undefined,
       estacionamientos: undefined,
       caracteristicas: undefined,
+      // Taxonomía Inmobiliaria
+      taxonomy_vertical_id: null,
+      taxonomy_segment_id: null,
+      taxonomy_subsegment_id: null,
+      taxonomy_attributes: {},
     },
   });
 
@@ -179,6 +198,7 @@ export function FormPropertyUnit() {
                   unitsImageUrls={unitsImageUrls}
                 />
               ),
+              "taxonomy": () => <TaxonomyStep />,
               "location-characteristics": () => <LocationCharacteristicsStep />,
               confirm: () => <Confirm />,
             })}

@@ -96,19 +96,66 @@ export const USER_ACTIVITY = [
   { id: 7, value: "Inmobiliaria", label: "Inmobiliaria" },
 ];
 
+/**
+ * Tipos de unidad inmobiliaria — cubre todos los subsegmentos de la taxonomía.
+ * Una "unidad" es un activo individual que puede pertenecer a un desarrollo
+ * o existir de forma independiente.
+ */
 export const TYPES_OF_UNITS = [
-  { id: 1, label: "Departamento", value: "Departamento" },
-  { id: 2, label: "Casa", value: "Casa" },
-  { id: 3, label: "Local comercial", value: "Local comercial" },
-  { id: 4, label: "Oficina", value: "Oficina" },
+  // --- Residencial ---
+  { id: 1,  label: "Casa sola",              value: "Casa sola",              grupo: "Residencial" },
+  { id: 2,  label: "Casa en condominio",      value: "Casa en condominio",      grupo: "Residencial" },
+  { id: 3,  label: "Villa / Residencia",      value: "Villa / Residencia",      grupo: "Residencial" },
+  { id: 4,  label: "Departamento",            value: "Departamento",            grupo: "Residencial" },
+  { id: 5,  label: "Loft",                    value: "Loft",                    grupo: "Residencial" },
+  { id: 6,  label: "Penthouse",               value: "Penthouse",               grupo: "Residencial" },
+  { id: 7,  label: "Studio",                  value: "Studio",                  grupo: "Residencial" },
+  { id: 8,  label: "Casa de playa",           value: "Casa de playa",           grupo: "Residencial" },
+  { id: 9,  label: "Cabaña / Glamping",       value: "Cabaña / Glamping",       grupo: "Residencial" },
+  // --- Comercial ---
+  { id: 10, label: "Local comercial",         value: "Local comercial",         grupo: "Comercial" },
+  { id: 11, label: "Plaza comercial",         value: "Plaza comercial",         grupo: "Comercial" },
+  { id: 12, label: "Centro comercial",        value: "Centro comercial",        grupo: "Comercial" },
+  { id: 13, label: "Restaurante",             value: "Restaurante",             grupo: "Comercial" },
+  { id: 14, label: "Dark kitchen",            value: "Dark kitchen",            grupo: "Comercial" },
+  // --- Oficinas ---
+  { id: 15, label: "Oficina corporativa",     value: "Oficina corporativa",     grupo: "Oficinas" },
+  { id: 16, label: "Coworking / Flex",        value: "Coworking / Flex",        grupo: "Oficinas" },
+  { id: 17, label: "Consultorio",             value: "Consultorio",             grupo: "Oficinas" },
+  // --- Industrial ---
+  { id: 18, label: "Bodega logística",        value: "Bodega logística",        grupo: "Industrial" },
+  { id: 19, label: "Centro de distribución", value: "Centro de distribución",  grupo: "Industrial" },
+  { id: 20, label: "Nave industrial",         value: "Nave industrial",         grupo: "Industrial" },
+  { id: 21, label: "Parque industrial",       value: "Parque industrial",       grupo: "Industrial" },
+  // --- Hospitalidad ---
+  { id: 22, label: "Hotel",                   value: "Hotel",                   grupo: "Hospitalidad" },
+  { id: 23, label: "Boutique hotel",          value: "Boutique hotel",          grupo: "Hospitalidad" },
+  { id: 24, label: "Airbnb / Vacation rental",value: "Airbnb / Vacation rental",grupo: "Hospitalidad" },
+  // --- Salud ---
+  { id: 25, label: "Clínica / Consultorio",   value: "Clínica / Consultorio",   grupo: "Salud" },
+  { id: 26, label: "Hospital",                value: "Hospital",                grupo: "Salud" },
+  // --- Terrenos ---
+  { id: 27, label: "Terreno urbano",          value: "Terreno urbano",          grupo: "Terrenos" },
+  { id: 28, label: "Lote residencial",        value: "Lote residencial",        grupo: "Terrenos" },
+  { id: 29, label: "Terreno industrial",      value: "Terreno industrial",      grupo: "Terrenos" },
+  { id: 30, label: "Terreno agropecuario",    value: "Terreno agropecuario",    grupo: "Terrenos" },
 ];
 
+/**
+ * Categorías de proyecto de desarrollo inmobiliario.
+ * Define el MODELO de desarrollo, no el tipo de inmueble.
+ * El tipo de inmueble se determina en el paso de Taxonomía.
+ */
 export const TYPES_OF_DEVELOPMENTS = [
-  { id: 1, label: "Terreno", value: "Terreno" },
-  { id: 2, label: "Bodega", value: "Bodega" },
-  { id: 3, label: "Lote", value: "Lote" },
-  { id: 4, label: "Loft", value: "Loft" },
-  { id: 5, label: "Nave comercial", value: "Nave comercial" },
+  { id: 1, label: "Vertical",             value: "Vertical",             descripcion: "Torres, edificios de departamentos, condominios en altura" },
+  { id: 2, label: "Horizontal",           value: "Horizontal",           descripcion: "Fraccionamientos, privadas, conjuntos de casas" },
+  { id: 3, label: "Uso Mixto",            value: "Uso Mixto",            descripcion: "Combina residencial, comercial y/u oficinas" },
+  { id: 4, label: "Parque Industrial",    value: "Parque Industrial",    descripcion: "Conjunto de naves, bodegas y áreas de manufactura" },
+  { id: 5, label: "Master Plan",          value: "Master Plan",          descripcion: "Desarrollo integral de gran escala con múltiples usos" },
+  { id: 6, label: "Comercial / Retail",   value: "Comercial / Retail",   descripcion: "Plazas, centros comerciales, strips de locales" },
+  { id: 7, label: "Hotelero / Turístico", value: "Hotelero / Turístico", descripcion: "Hoteles, resorts, desarrollos vacacionales" },
+  { id: 8, label: "Oficinas Corporativas",value: "Oficinas Corporativas",descripcion: "Edificios de oficinas, campus corporativos" },
+  { id: 9, label: "Reconversión / Retrofit", value: "Reconversión / Retrofit", descripcion: "Rehabilitación de inmueble existente con nuevo uso" },
 ];
 
 export const TYPES_OF_USES = [

@@ -1,18 +1,32 @@
 "use client";
-import { usePathname } from "next/navigation";
-import { Separator } from "../ui/separator";
 import { SidebarTrigger } from "../ui/sidebar";
-import { ROUTE_TITLES } from "@/utils/constants";
+import { BellIcon, PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export function Header() {
-  const pathname = usePathname();
-  const section = pathname.split("/")[1];
-  const titlePage = ROUTE_TITLES[section] ?? "Inicio";
   return (
-    <header className="flex items-center shrink-0 p-2 h-12 border-b w-full gap-2">
-      <SidebarTrigger />
-      <Separator orientation="vertical" />
-      <h1 className="font-bold uppercase">{titlePage}</h1>
+    <header className="px-6 py-4 flex items-center justify-between shrink-0 mb-4">
+      {/* Left: Sidebar Trigger (Global Navigation) */}
+      <div className="flex items-center">
+        <SidebarTrigger className="-ml-3" />
+      </div>
+
+      {/* Right: Global Actions */}
+      <div className="flex items-center gap-3">
+        <Link
+          href="/properties/create"
+          className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:shadow-xl transition-all"
+        >
+          <PlusIcon size={18} />
+          <span>Crear Propiedad</span>
+        </Link>
+        <button
+          className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-white transition-colors"
+          aria-label="Notificaciones"
+        >
+          <BellIcon size={20} />
+        </button>
+      </div>
     </header>
   );
 }

@@ -1,149 +1,114 @@
-import Link from "next/link";
+"use client";
+import { type PropertyWithImages } from "@/types";
+import { BedIcon, BathIcon, ScalingIcon, HeartIcon } from "lucide-react";
 import Image from "next/image";
-import {
-  BarChart3Icon,
-  BathIcon,
-  BedDoubleIcon,
-  Grid2x2Icon,
-  MapPinIcon,
-  SquareIcon,
-  TrendingUpIcon,
-} from "lucide-react";
-import {
-  CITIES_NAMES_BY_ID,
-  formatMoney,
-  NAME_TYPE_ACTION_BY_ID,
-  STATES_NAMES_BY_ID,
-} from "@/utils/formatters";
-import { Badge } from "@/components/ui/badge";
-import { FavoriteButton } from "./favorite-button";
-import { PropertyWithImages } from "@/types";
+import Link from "next/link";
+
+interface PropertyMetrics {
+  roi?: number;
+  cap?: number;
+  abs?: string;
+  aiScore?: number;
+}
+
 interface Props {
   property: PropertyWithImages;
+  metrics?: PropertyMetrics;
 }
-export function CardProperty({ property }: Props) {
-  const imageUrl =
-    property.imagenes_propiedades.length > 0
-      ? property.imagenes_propiedades[0].image_url
-      : "/images/placeholder.svg";
-  const calculateM2Price = () => {
-    if (property.area_construida && property.area_construida > 0) {
-      return formatMoney(property.precio / property.area_construida);
-    }
-    return 0;
+
+export function CardProperty({ property, metrics }: Props) {
+  // Format price helper
+  const formatPrice = (price: number) => {
+    if (price >= 1000000) return `$${(price / 1000000).toFixed(1)}M`;
+    if (price >= 1000) return `$${(price / 1000).toFixed(0)}k`;
+    return `$${price}`;
   };
+
+  // Determine colors based on operation type
+  // Use fetched action name or fallback (e.g. from ID logic if needed, but fetch is better)
+  const operationType = property.accionespropiedades?.nombre_accion_propiedad || "Venta";
+  const isRent = operationType.toLowerCase().includes("renta");
+
+  const badgeColor = isRent ? "bg-blue-600/90" : "bg-emerald-600/90";
+  const scoreColor = isRent ? "text-blue-600 border-blue-100 bg-blue-50" : "text-emerald-600 border-emerald-100 bg-emerald-50";
+
+  // Image handling
+  const imageUrl = property.imagenes_propiedades?.[0]?.image_url || "https://placehold.co/600x400?text=No+Image";
+
   return (
-    <Link
-      href={`/properties/${property.is_unit ? "unit" : "development"}/view/${
-        property.id
-      }`}
-      title={property.nombre}
-      className="group flex flex-col h-full border border-border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-card overflow-hidden"
-    >
-      {/* Image Section */}
-      <div className="relative h-48 overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt="Departamento en renta en Real de Juriquilla"
-          fill
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+    <article className="group relative bg-white rounded-2xl overflow-hidden border border-slate-100 hover:border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+      {/* Image Container */}
+      <div className="relative h-40 w-full overflow-hidden shrink-0">
+        <Link href={`/properties/${property.is_unit ? "unit" : "development"}/view/${property.id}`} className="block h-full w-full">
+          <Image
+            src={imageUrl}
+            alt={property.nombre}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </Link>
 
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-linear-to-t from-foreground/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex items-center gap-2">
-          <Badge>{NAME_TYPE_ACTION_BY_ID[property.id_tipo_accion]}</Badge>
-        </div>
-
-        <div className="absolute top-3 right-3">
-          <Badge className="property-badge property-badge-type">
-            {property.tipo}
-          </Badge>
-        </div>
-
-        {/* Price */}
-        <div className="absolute bottom-3 left-3 bg-slate-50 p-2 rounded">
-          <span className="text-sm font-bold text-foreground">
-            {formatMoney(property.precio)}
+        {/* Operation Badge */}
+        <div className="absolute top-2 left-2">
+          <span className={`px-2 py-1 ${badgeColor} backdrop-blur-sm text-white text-[10px] font-bold tracking-wide rounded-md shadow-sm uppercase`}>
+            {operationType}
           </span>
-          <span className="block text-xs text-muted-foreground">{`${calculateM2Price()}/m²`}</span>
         </div>
 
         {/* Favorite Button */}
-        <FavoriteButton />
+        <div className="absolute top-2 right-2 z-10">
+          <button className="w-8 h-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-rose-500 transition-all">
+            <HeartIcon size={16} />
+          </button>
+        </div>
       </div>
 
-      {/* Content Section */}
-      <div className="flex flex-col flex-1 p-4">
-        {/* Title */}
-        <h3 className="font-semibold text-foreground text-base leading-tight line-clamp-2 mb-1">
-          {property.nombre}
-        </h3>
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <div className="text-base font-bold text-slate-900">
+              {formatPrice(property.precio)} <span className="text-xs text-slate-400 font-normal">{isRent ? "/mes" : ""}</span>
+            </div>
+            <h3 className="text-sm font-semibold text-slate-700 truncate w-40" title={property.nombre}>
+              {property.nombre}
+            </h3>
+          </div>
+          {/* AI Score Badge */}
+          <div className={`px-1.5 py-0.5 rounded text-[10px] font-bold border flex items-center gap-1 ${scoreColor}`}>
+            {metrics?.aiScore != null ? `${metrics.aiScore}%` : "—"}
+          </div>
+        </div>
 
-        {/* Location */}
-        <div className="flex items-center text-muted-foreground mb-3">
-          <MapPinIcon className="w-4 h-4 mr-1 shrink-0" />
-          <span className="text-sm truncate">
-            {`${CITIES_NAMES_BY_ID[property.id_ciudad]}, ${
-              STATES_NAMES_BY_ID[property.id_estado]
-            }`}
+        {/* Specs */}
+        <div className="flex items-center gap-3 text-xs text-slate-500 mb-4">
+          <span className="flex items-center gap-1">
+            <BedIcon size={14} /> {property.habitaciones}
+          </span>
+          <span className="flex items-center gap-1">
+            <BathIcon size={14} /> {property.banios}
+          </span>
+          <span className="flex items-center gap-1">
+            <ScalingIcon size={14} /> {property.area_construida}m²
           </span>
         </div>
 
-        {/* Property Details */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-          <div className="flex items-center gap-1.5">
-            <BedDoubleIcon className="w-4 h-4" />
-            {property.habitaciones ?? 0}
+        {/* Metrics Grid */}
+        <div className="mt-auto pt-3 border-t border-slate-50 grid grid-cols-3 gap-1">
+          <div className="text-center">
+            <div className="text-[10px] text-slate-400 uppercase font-semibold">ROI</div>
+            <div className="text-sm font-bold text-blue-600">{metrics?.roi != null ? `${metrics.roi}%` : "—"}</div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <BathIcon className="w-4 h-4" />
-            {property.banios ?? 0}
+          <div className="text-center border-l border-slate-100">
+            <div className="text-[10px] text-slate-400 uppercase font-semibold">Cap</div>
+            <div className="text-sm font-bold text-slate-700">{metrics?.cap != null ? `${metrics.cap}%` : "—"}</div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <SquareIcon className="w-4 h-4" />
-            <span>{property.area ?? 0} m²</span>
-          </div>
-          {!property.is_unit && (
-            <div className="flex items-center gap-1.5">
-              <Grid2x2Icon className="w-4 h-4" />
-              <span>{property.area_construida ?? 0} m²</span>
-            </div>
-          )}
-        </div>
-
-        {/* Market Intelligence Section */}
-        <div className="mt-auto pt-4 border-t border-border">
-          <div className="flex items-center gap-2 mb-3">
-            <BarChart3Icon className="w-4 h-4 text-primary" />
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Inteligencia de Mercado
-            </span>
-            <div className="ml-auto flex items-center gap-1 text-success">
-              <TrendingUpIcon className="w-3 h-3" />
-              <span className="text-xs font-semibold">+12% anual</span>
-            </div>
-          </div>
-
-          {/* Bottom metrics */}
-          <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <span className="text-success">●</span>
-              <span>ROI: 14%</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-primary">↗</span>
-              <span>Cap Rate: 6.5%</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-warning">◷</span>
-              <span>Inventario: 2 meses</span>
-            </div>
+          <div className="text-center border-l border-slate-100">
+            <div className="text-[10px] text-slate-400 uppercase font-semibold">Abs.</div>
+            <div className="text-sm font-bold text-orange-500">{metrics?.abs ?? "—"}</div>
           </div>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }

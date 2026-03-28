@@ -1,7 +1,4 @@
-/** TODO: Solucionar error de exportacion dinamica con el componente
- * SearchBox dentro de section filters
- */
-import { AsideProperties, Map, SectionFilters } from "@/components/explore";
+import { AsideProperties, Map, SectionFilters, ExploreLayoutHandler } from "@/components/explore";
 import { ErrorMessage } from "@/components/shared";
 import { getAllPropertiesByCurrentUser } from "@/server/queries";
 
@@ -11,15 +8,20 @@ export default async function ExplorePage() {
     return <ErrorMessage message="Error al cargar las propiedades." />;
   }
   const properties = response.data;
+
   return (
-    <div className="flex flex-col gap-y-4">
-      <SectionFilters />
-      <div className="grid grid-cols-1">
-        <div className="w-full min-h-[500px]">
+    <>
+      <ExploreLayoutHandler
+        rightPanel={<AsideProperties properties={properties} />}
+      />
+      <div className="flex flex-col h-full w-full relative">
+        <div className="flex-1 relative">
           <Map />
+          <div className="absolute top-4 left-4 right-4 z-10">
+            <SectionFilters />
+          </div>
         </div>
-        <AsideProperties properties={properties} />
       </div>
-    </div>
+    </>
   );
 }

@@ -1,7 +1,9 @@
-import { SectionLeft, SectionRight } from "@/components/property/unit";
+import { PropertyViewLayout } from "@/components/property/view/property-view-layout";
+import { PropertyViewTracker } from "@/components/property/view/property-view-tracker";
 import { ErrorMessage } from "@/components/shared";
 import { getPropertyById } from "@/server/queries";
-import Image from "next/image";
+import { getPropertyOwner, type PropertyOwner } from "@/components/property/view/property-owner-card";
+
 export default async function PropertiesUnitViewPage({
   params,
 }: {
@@ -15,37 +17,19 @@ export default async function PropertiesUnitViewPage({
   }
   const unit = response.data;
 
-  const mainImage =
-    unit.imagenes_propiedades.length > 0
-      ? unit.imagenes_propiedades[0].image_url
-      : "/images/placeholder.svg";
+  // Fetch property owner in parallel with rendering
+  const owner: PropertyOwner | null = unit.id_usuario
+    ? await getPropertyOwner(unit.id_usuario)
+    : null;
+
   return (
-    <section className="flex flex-col gap-y-6">
-      {/** Seccion de imagenes */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Imagen principal */}
-        <div className="min-h-96 w-full col-span-2 relative">
-          <Image
-            src={mainImage}
-            alt="Main image"
-            layout="fill"
-            objectFit="cover"
-            loading="eager"
-          />
-        </div>
-        {/** Imagenes secundarias */}
-        <div className="w-full h-full flex flex-col gap-y-4">
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-        </div>
-      </div>
-      {/** Seccion de informacion */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Section left */}
-        <SectionLeft unit={unit} />
-        {/** Section right */}
-        <SectionRight unit={unit} />
-      </div>
-    </section>
+    <>
+      <PropertyViewTracker
+        propertyId={id}
+        propertyType="unit"
+        propertyName={unit.nombre}
+      />
+      <PropertyViewLayout property={unit} owner={owner} />
+    </>
   );
 }

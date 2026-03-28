@@ -10,5 +10,11 @@ export default async function PropertiesDevelopmentCreatePage() {
     );
   }
   const availableUnits = response.data;
-  return <FormPropertyDevelopment availableUnits={availableUnits} />;
+  return (
+    <div className="flex flex-col h-full bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto scrollbar-hide min-h-0 p-8">
+        <FormPropertyDevelopment availableUnits={availableUnits} />
+      </div>
+    </div>
+  );
 }

@@ -9,11 +9,11 @@ export type ActionResponse = {
 
 export type FormState<T> =
   | {
-      ok?: boolean;
-      errors?: Partial<Record<keyof T, string[]>>;
-      inputs?: Partial<T>;
-      message?: string;
-    }
+    ok?: boolean;
+    errors?: Partial<Record<keyof T, string[]>>;
+    inputs?: Partial<T>;
+    message?: string;
+  }
   | undefined;
 
 export type QueryResponse<T> = {
@@ -44,6 +44,7 @@ type PropertyImage =
 type PropertyAmenty = Database["public"]["Tables"]["amenidades_propiedades"]["Row"];
 export type PropertyWithImages = Property & {
   imagenes_propiedades: PropertyImage[];
+  accionespropiedades?: { nombre_accion_propiedad: string } | null;
 };
 export type PropertyWithImagesAndAmenities = PropertyWithImages & {
   amenidades_propiedades: PropertyAmenty[];

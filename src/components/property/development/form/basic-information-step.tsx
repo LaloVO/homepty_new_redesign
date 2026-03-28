@@ -10,7 +10,7 @@ import {
   NativeSelectOption,
 } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { type BasicInfoProperty } from "@/schemas";
+import { type BasicInfoDevelopment } from "@/schemas";
 import { TYPES_OF_DEVELOPMENTS, TYPES_OF_OPERATIONS, TYPES_OF_USES } from "@/utils/constants";
 import { UploadIcon } from "lucide-react";
 import Image from "next/image";
@@ -31,13 +31,25 @@ export function BasicInformationStep({
 }: Props) {
   const {
     register,
+    watch,
     formState: { errors },
-  } = useFormContext<BasicInfoProperty>();
+  } = useFormContext<BasicInfoDevelopment>();
+
+  // Mostrar descripción del tipo de desarrollo seleccionado
+  const selectedTipo = watch("tipo");
+  const selectedTipoDesc = TYPES_OF_DEVELOPMENTS.find(
+    (d) => d.value === selectedTipo
+  )?.descripcion;
 
   return (
     <section className="grid grid-cols-2 items-start gap-6">
-      <div className="flex flex-col gap-y-2">
-        <Label htmlFor="tipo">Tipo de desarrollo *</Label>
+
+      {/* Categoría de desarrollo */}
+      <div className="flex flex-col gap-y-2 col-span-2">
+        <Label htmlFor="tipo">Categoría de desarrollo *</Label>
+        <p className="text-xs text-muted-foreground -mt-1">
+          Define el modelo del proyecto. El tipo de inmueble se clasifica en el siguiente paso.
+        </p>
         <div className="flex flex-col gap-y-1">
           <NativeSelect
             id="tipo"
@@ -45,7 +57,7 @@ export function BasicInformationStep({
             aria-invalid={errors.tipo ? "true" : "false"}
           >
             <NativeSelectOption value="" disabled>
-              Seleccionar tipo de desarrollo
+              Seleccionar categoría de desarrollo
             </NativeSelectOption>
             {TYPES_OF_DEVELOPMENTS.map((dev_type) => (
               <NativeSelectOption key={dev_type.id} value={dev_type.value}>
@@ -54,6 +66,12 @@ export function BasicInformationStep({
             ))}
           </NativeSelect>
           {errors.tipo && <ErrorMessage message={errors.tipo.message!} />}
+          {/* Descripción contextual del tipo seleccionado */}
+          {selectedTipoDesc && (
+            <p className="text-xs text-blue-700 bg-blue-50 border border-blue-100 rounded-md px-3 py-2 mt-1">
+              {selectedTipoDesc}
+            </p>
+          )}
         </div>
       </div>
 
@@ -61,7 +79,7 @@ export function BasicInformationStep({
         label="Nombre del desarrollo *"
         type="text"
         {...register("nombre")}
-        placeholder="Ej: Residencial Los Pinos"
+        placeholder="Ej: Residencial Los Pinos, Torre Reforma 180"
         error={errors.nombre?.message}
       />
 
@@ -80,7 +98,12 @@ export function BasicInformationStep({
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label htmlFor="id_tipo_uso">Tipo de uso *</Label>
+        <Label htmlFor="id_tipo_uso">
+          Tipo de uso *
+        </Label>
+        <p className="text-xs text-muted-foreground -mt-1">
+          Determina qué tipos de inmueble se mostrarán en el siguiente paso.
+        </p>
         <NativeSelect
           id="id_tipo_uso"
           {...register("id_tipo_uso", { valueAsNumber: true })}
@@ -92,7 +115,7 @@ export function BasicInformationStep({
           ))}
         </NativeSelect>
       </div>
-      
+
       <div className="flex flex-col gap-y-4 col-span-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="imagenes">Imágenes generales *</Label>
@@ -100,7 +123,6 @@ export function BasicInformationStep({
             <UploadIcon />
             Agregar fotos
           </Button>
-          {/* Input oculto */}
           <Input
             type="file"
             ref={inputRef}
@@ -145,7 +167,7 @@ export function BasicInformationStep({
         <div className="flex flex-col gap-y-1">
           <Textarea
             className="min-h-20 max-h-40"
-            placeholder="Ej: Desarrollo residencial premium con amenidades de lujo..."
+            placeholder="Ej: Desarrollo residencial vertical con 120 departamentos, amenidades de primer nivel y ubicación estratégica..."
             {...register("descripcion")}
             aria-invalid={errors.descripcion ? "true" : "false"}
           />
@@ -157,12 +179,12 @@ export function BasicInformationStep({
 
       <div className="flex flex-col gap-y-2 col-span-2">
         <Label htmlFor="descripcion_estado">
-          Describe el estado de este desarrollo *
+          Estado del desarrollo *
         </Label>
         <div className="flex flex-col gap-y-1">
           <Textarea
             className="min-h-20 max-h-40"
-            placeholder="Ej: Proyecto en construcción con avance del 60%..."
+            placeholder="Ej: Proyecto en preventa con avance de obra del 40%, entrega estimada Q4 2026..."
             {...register("descripcion_estado")}
             aria-invalid={errors.descripcion_estado ? "true" : "false"}
           />
@@ -174,12 +196,12 @@ export function BasicInformationStep({
 
       <div className="flex flex-col gap-y-2 col-span-2">
         <Label htmlFor="descripcion_inversion_desarrollo">
-          Describe la inversión para este desarrollo
+          Tesis de inversión
         </Label>
         <div className="flex flex-col gap-y-1">
           <Textarea
             className="min-h-20 max-h-40"
-            placeholder="Ej: Excelente oportunidad de inversión con retorno estimado..."
+            placeholder="Ej: Retorno estimado del 18% anual, zona de alta plusvalía, demanda comprobada..."
             {...register("descripcion_inversion")}
             aria-invalid={errors.descripcion_inversion ? "true" : "false"}
           />

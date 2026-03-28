@@ -1,6 +1,8 @@
-import { AppSidebar, Header } from "@/components/layout";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell } from "@/components/layout/app-shell";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { ActivityTracker } from "@/components/layout/activity-tracker";
 
 export default function ProtectedLayout({
   children,
@@ -9,16 +11,12 @@ export default function ProtectedLayout({
 }>) {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <Header />
-        <main className="flex flex-1 flex-col gap-4 p-4">
-          <section className="min-h-[calc(100svh - 3rem)] flex-1 md:min-h-min">
-            {children}
-          </section>
-        </main>
-        <Toaster duration={3000} position="top-right" richColors={true} />
-      </SidebarInset>
+      <ActivityTracker />
+      <AppShell leftSidebar={<AppSidebar />}>
+        {children}
+      </AppShell>
+      <Toaster position="top-right" richColors={true} />
     </SidebarProvider>
   );
 }
+

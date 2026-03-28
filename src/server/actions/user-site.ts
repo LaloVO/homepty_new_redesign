@@ -5,7 +5,6 @@ import { generateCBFApiKey } from "@/lib/crypto/generate-api-key";
 import { CreateUserSiteSchema, UpdateUserSiteSchema } from "@/schemas";
 import { ActionResponse } from "@/types";
 import { revalidatePath } from "next/cache";
-import z from "zod";
 
 /**
  * Crea un nuevo sitio web para el usuario actual

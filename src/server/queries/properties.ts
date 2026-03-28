@@ -66,7 +66,7 @@ export async function getAllProperties({
       Number(filters.estacionamientos)
     );
   }
-  const { error, data } = await queryBuilder;
+  const { error, data: properties } = await queryBuilder;
 
   if (error) {
     console.log("Error al obtener las propiedades:", error);
@@ -75,6 +75,18 @@ export async function getAllProperties({
       message: "Error al obtener las propiedades. Por favor, intenta de nuevo.",
     };
   }
+
+  // Fetch actions manually to join (missing FK workaround)
+  const { data: actions } = await supabase
+    .from("accionespropiedades")
+    .select("*");
+
+  const data = properties?.map((p) => ({
+    ...p,
+    accionespropiedades: actions?.find(
+      (a) => a.id_accion_propiedad === p.id_tipo_accion
+    ),
+  })) as PropertyWithImages[];
 
   return {
     ok: true,

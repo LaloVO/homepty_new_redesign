@@ -20,7 +20,7 @@ interface Props {
   id: Client["id_cliente"];
 }
 export function AlertDialogDelete({ id }: Props) {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const handleDelete = () => {
     startTransition(async () => {

@@ -22,17 +22,25 @@ export async function updateUserAction(
   }
 
   const supabase = await createClient();
+
+  const updateData: Record<string, unknown> = {
+    nombre_usuario: validatedFields.data.nombre_usuario,
+    telefono_usuario: validatedFields.data.telefono_usuario,
+    email_usuario: validatedFields.data.email_usuario,
+    actividad_usuario: validatedFields.data.actividad_usuario,
+    id_estado: validatedFields.data.id_estado,
+    id_ciudad: validatedFields.data.id_ciudad,
+    descripcion_usuario: validatedFields.data.descripcion_usuario,
+  };
+
+  // Only update image if a URL was provided
+  if (validatedFields.data.imagen_perfil_usuario) {
+    updateData.imagen_perfil_usuario = validatedFields.data.imagen_perfil_usuario;
+  }
+
   const { error } = await supabase
     .from("usuarios")
-    .update({
-      nombre_usuario: validatedFields.data.nombre_usuario,
-      telefono_usuario: validatedFields.data.telefono_usuario,
-      email_usuario: validatedFields.data.email_usuario,
-      actividad_usuario: validatedFields.data.actividad_usuario,
-      id_estado: validatedFields.data.id_estado,
-      id_ciudad: validatedFields.data.id_ciudad,
-      descripcion_usuario: validatedFields.data.descripcion_usuario,
-    })
+    .update(updateData)
     .eq("id", userId);
 
   if (error) {

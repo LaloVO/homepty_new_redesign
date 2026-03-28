@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { uploadImage } from "@/lib/supabase/storage";
 import { PropertySchema } from "@/schemas";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { trackActivity } from "./activity-tracker";
 import z from "zod";
 
 export async function createUnitAction({
@@ -93,6 +94,7 @@ export async function createUnitAction({
   }
   revalidatePath("/");
   revalidateTag("properties", "max");
+  trackActivity({ tipo_actividad: "propiedad_listada", modulo: "crm", entidad_id: String(unidad.id), entidad_tipo: "propiedad", metadata: { tipo: unitData.tipo, is_unit: true } }).catch(() => { });
   return {
     ok: true,
     message: "Unidad creada con éxito",
@@ -205,6 +207,7 @@ export async function createDevelopmentAction({
 
   revalidatePath("/");
   revalidateTag("properties", "max");
+  trackActivity({ tipo_actividad: "propiedad_listada", modulo: "crm", entidad_id: String(desarrolloData.id), entidad_tipo: "propiedad", metadata: { tipo: validatedFields.data.tipo, is_unit: false, units_count: unitIds.length } }).catch(() => { });
   return {
     ok: true,
     message: "Desarrollo creado con éxito"

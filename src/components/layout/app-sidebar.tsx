@@ -13,24 +13,26 @@ import { SIDEBAR_ITEMS } from "@/utils/sidebar";
 import { SidebarItem } from "./sidebar-item";
 
 export function AppSidebar() {
-  const sidebarItemsMap = SIDEBAR_ITEMS.map((item) => (
-    <SidebarItem key={item.id} item={item} />
-  ));
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-none bg-transparent">
       <HeaderSidebar />
-      <SidebarContent>
+      <SidebarContent className="py-2">
+        {/* Main Navigation */}
         <SidebarGroup>
-          <SidebarGroupLabel>Sistema</SidebarGroupLabel>
+          <SidebarGroupLabel className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            Menu
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {sidebarItemsMap}
+              {SIDEBAR_ITEMS.map((item) => (
+                <SidebarItem key={item.id} item={item} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-         <NavUser />
+      <SidebarFooter className="">
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

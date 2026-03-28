@@ -4,9 +4,10 @@ import { PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { FormUser } from "./form-user";
-import { User } from "@/types";
+import { UserWithLocation } from "@/server/queries/user/get-user-info";
+
 interface Props {
-  user: User;
+  user: UserWithLocation;
 }
 export function DialogEditUser({ user }: Props) {
   const [open, setOpen] = useState(false);
@@ -18,8 +19,8 @@ export function DialogEditUser({ user }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button type="button" variant={"outline"} title="Editar">
-            <PencilIcon className="text-green-600" />
-            Editar perfil
+          <PencilIcon className="text-green-600" />
+          Editar perfil
         </Button>
       </DialogTrigger>
       <DialogContent className="md:max-w-2xl max-h-[95svh] overflow-y-auto">

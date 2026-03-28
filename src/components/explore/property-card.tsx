@@ -1,10 +1,5 @@
 import { PropertyWithImages } from "@/types";
-import {
-  CITIES_NAMES_BY_ID,
-  formatMoney,
-  STATES_NAMES_BY_ID,
-} from "@/utils/formatters";
-import { BathIcon, BedIcon, MapPinIcon } from "lucide-react";
+import { formatMoney } from "@/utils/formatters";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,61 +8,50 @@ interface Props {
 }
 
 export function PropertyCard({ property }: Props) {
-
   const imageUrl =
     property.imagenes_propiedades.length > 0
       ? property.imagenes_propiedades[0].image_url
       : "/images/placeholder.svg";
 
+  // Mock ROI/CAP/VAL logic for demonstration (matching HTML fragment's look)
+  const isRent = property.nombre.toLowerCase().includes("torre") || property.precio! < 100000;
+  const badgeLabel = isRent ? "99%" : "94%";
+
   return (
-    <Link
-      href={`${`/properties/${property.is_unit ? "unit" : "development"}/view/${property.id}`}`}
-      className="group cursor-pointer transition-colors"
-    >
-      <div className="p-4 flex gap-4">
-        {/* Thumbnail */}
-        <div className="w-32 h-24 shrink-0 overflow-hidden bg-muted relative">
+    <article className="bg-white border border-gray-200 rounded-xl p-3 hover:shadow-float hover:border-primary/30 transition-all cursor-pointer group">
+      <Link
+        href={`/properties/${property.is_unit ? "unit" : "development"}/view/${property.id}`}
+        className="flex gap-3"
+      >
+        <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100">
           <Image
-            src={imageUrl || "/images/placeholder.svg"}
+            src={imageUrl}
             alt={property.nombre}
             fill
-            sizes="128px"
-            className="object-cover group-hover:scale-105 transition-transform w-28 h-20"
+            className="w-full h-full object-cover"
           />
+          <div className="absolute top-1 left-1 bg-white/90 backdrop-blur px-1.5 py-0.5 rounded text-[9px] font-bold text-emerald-600 shadow-sm">
+            {badgeLabel}
+          </div>
         </div>
-
-        {/* Content */}
-        <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-          <div>
-            <h3 className="text-sm font-medium text-foreground line-clamp-1 mb-1">
-              {property.nombre}
-            </h3>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <MapPinIcon size={12} />
-              {STATES_NAMES_BY_ID[property.id_estado]} -{" "}
-              {CITIES_NAMES_BY_ID[property.id_ciudad]}
-            </p>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between items-start mb-0.5">
+            <h3 className="text-sm font-bold text-gray-800 truncate">{property.nombre}</h3>
           </div>
+          <p className="text-[11px] text-gray-500 truncate mb-2">
+            {property.area} m² - {property.habitaciones || 0} Hab
+          </p>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">
-              {formatMoney(property.precio ?? 0)}
+            <span className="text-sm font-semibold text-primary">
+              {formatMoney(property.precio || 0)}
+              {isRent && <span className="text-[10px] text-gray-400 font-normal">/mo</span>}
             </span>
-            <span className="text-xs text-muted-foreground">
-              {property.area} m²
-            </span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1 text-muted-foreground text-xs">
-              <BedIcon size={12} />
-              {property.banios ?? 0}
-            </span>
-            <span className="flex items-center gap-1 text-muted-foreground text-xs">
-              <BathIcon size={12} />
-              {property.habitaciones ?? 0}
+            <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
+              ROI 14%
             </span>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </article>
   );
 }

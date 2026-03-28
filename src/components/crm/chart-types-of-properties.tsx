@@ -1,6 +1,6 @@
 "use client";
-import { Pie, PieChart } from "recharts";
 
+import { Label, Pie, PieChart } from "recharts";
 import {
   Card,
   CardContent,
@@ -14,61 +14,90 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useMemo } from "react";
 
-export const description = "A pie chart with a label";
+interface ChartTypesOfPropertiesProps {
+  chartData: Array<{
+    type: string;
+    quantity: number;
+    fill: string;
+  }>;
+  totalCount: number;
+}
 
-const chartData = [
-  { type: "Casa", quantity: 275, fill: "var(--color-chrome)" },
-  { type: "Departamento", quantity: 200, fill: "var(--color-safari)" },
-  { type: "Lote", quantity: 187, fill: "var(--color-firefox)" },
-  { type: "Local comercial", quantity: 173, fill: "var(--color-edge)" },
-  { type: "Otro", quantity: 90, fill: "var(--color-other)" },
-];
+export function ChartTypesOfProperties({ chartData, totalCount }: ChartTypesOfPropertiesProps) {
+  const chartConfig = useMemo(() => {
+    const config: Record<string, { label: string; color?: string }> = {};
+    chartData.forEach((item) => {
+      config[item.type] = { label: item.type };
+    });
+    return config satisfies ChartConfig;
+  }, [chartData]);
 
-const chartConfig = {
-  quantity: {
-    label: "quantity",
-  },
-  chrome: {
-    label: "Casa",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Deparatamento",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Lote",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Local comercial",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Oto",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig;
+  const hasData = totalCount > 0;
 
-export function ChartTypesOfProperties() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Tipos de inmuebles</CardTitle>
-        <CardDescription>Mostrando cantidad de cada tipo de propiedad</CardDescription>
+        <CardTitle>Tipos de propiedades</CardTitle>
+        <CardDescription>Distribución de tu portafolio</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square h-full max-h-[400px] pb-0"
-        >
-          <PieChart>
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="quantity" label nameKey="type" />
-          </PieChart>
-        </ChartContainer>
+        {!hasData ? (
+          <div className="flex items-center justify-center h-48 text-sm text-muted-foreground">
+            Sin propiedades registradas
+          </div>
+        ) : (
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Pie
+                data={chartData}
+                dataKey="quantity"
+                nameKey="type"
+                innerRadius={60}
+                strokeWidth={5}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {totalCount}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            Inmuebles
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
-};
+}

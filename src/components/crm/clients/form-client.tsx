@@ -16,7 +16,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { ClientSchema } from "@/schemas";
 import { createClientAction, updateClientAction } from "@/server/actions";
 import { Client } from "@/types";
-import { TYPES_OF_PROPERTIES } from "@/utils/constants";
+import { TYPES_OF_UNITS } from "@/utils/constants";
+import { UNIT_TIPO_VALUES } from "@/schemas/property-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -43,7 +44,7 @@ export function FormClient({ client, handleDialog }: Props) {
       cantidad_banios: client?.cantidad_banios ?? 0,
       cantidad_habitaciones: client?.cantidad_habitaciones ?? 0,
       cantidad_estacionamientos: client?.cantidad_estacionamientos ?? 0,
-      tipo_propiedad: client?.tipo_propiedad ?? "Casa",
+      tipo_propiedad: (client?.tipo_propiedad as typeof UNIT_TIPO_VALUES[number] | undefined) ?? "Departamento",
       accion: client?.accion ?? null,
     },
   });
@@ -142,7 +143,7 @@ export function FormClient({ client, handleDialog }: Props) {
               <NativeSelectOption value="">
                 Seleccionar tipo...
               </NativeSelectOption>
-              {TYPES_OF_PROPERTIES.map((property) => (
+              {TYPES_OF_UNITS.map((property) => (
                 <NativeSelectOption key={property.id} value={property.label}>
                   {property.label}
                 </NativeSelectOption>

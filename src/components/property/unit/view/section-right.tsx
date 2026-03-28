@@ -13,7 +13,12 @@ export function SectionRight({ unit }: Props) {
       {/* Card de Simulador de crédito hipotecario */}
       <CardCreditSimulator unit={unit} />
       {/* Card de Análisis de precio */}
-      <CardPriceAnalysis unit={unit} />
+      <CardPriceAnalysis
+        direccion={unit.direccion}
+        precio={unit.precio}
+        area={unit.area_construida || unit.area}
+        tipo_inmueble={2}
+      />
       {/* Card de Análisis de inversión */}
       <div className="w-full p-4 rounded border border-muted flex flex-col gap-y-4">
         <div className="flex items-center gap-x-2">

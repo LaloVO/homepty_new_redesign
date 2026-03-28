@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ClientSchema } from "@/schemas";
 import { ActionResponse, Client } from "@/types";
 import { revalidatePath } from "next/cache";
+import { trackActivity } from "./activity-tracker";
 
 export async function createClientAction({
   client,
@@ -50,6 +51,8 @@ export async function createClientAction({
     };
   }
   revalidatePath("/crm/clients");
+  revalidatePath("/crm");
+  trackActivity({ tipo_actividad: "cliente_creado", modulo: "crm", entidad_tipo: "cliente", metadata: { email: validatedFields.data.email_cliente } }).catch(() => { });
   return {
     ok: true,
     message: "Cliente creado exitosamente.",

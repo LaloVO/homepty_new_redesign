@@ -1,7 +1,8 @@
-import { SectionLeft, SectionRight } from "@/components/property/development";
+import { PropertyViewLayout } from "@/components/property/view/property-view-layout";
+import { PropertyViewTracker } from "@/components/property/view/property-view-tracker";
 import { ErrorMessage } from "@/components/shared";
 import { getPropertyById } from "@/server/queries";
-import Image from "next/image";
+import { getPropertyOwner, type PropertyOwner } from "@/components/property/view/property-owner-card";
 
 export default async function PropertiesDevelopmentViewPage({
   params,
@@ -16,38 +17,19 @@ export default async function PropertiesDevelopmentViewPage({
   }
   const development = response.data;
 
-  const mainImage =
-    development.imagenes_propiedades.length > 0
-      ? development.imagenes_propiedades[0].image_url
-      : "/images/placeholder.svg";
+  // Fetch property owner in parallel with rendering
+  const owner: PropertyOwner | null = development.id_usuario
+    ? await getPropertyOwner(development.id_usuario)
+    : null;
 
   return (
-    <section className="flex flex-col gap-y-6">
-      {/** Seccion de imagenes */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Imagen principal */}
-        <div className="min-h-96 w-full col-span-2 relative">
-          <Image
-            src={mainImage}
-            alt="Main image"
-            layout="fill"
-            objectFit="cover"
-            loading="eager"
-          />
-        </div>
-        {/** Imagenes secundarias */}
-        <div className="w-full h-full flex flex-col gap-y-4">
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-          <div className="w-full h-1/2 bg-gray-200 animate-pulse" />
-        </div>
-      </div>
-      {/** Seccion de informacion */}
-      <div className="grid grid-cols-3 gap-6">
-        {/** Section left */}
-        <SectionLeft development={development} />
-        {/** Section right */}
-        <SectionRight development={development} />
-      </div>
-    </section>
+    <>
+      <PropertyViewTracker
+        propertyId={id}
+        propertyType="development"
+        propertyName={development.nombre}
+      />
+      <PropertyViewLayout property={development} owner={owner} />
+    </>
   );
 }

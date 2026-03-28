@@ -17,7 +17,7 @@ export async function SectionProperties({ propertiesPromise }: Props) {
     );
   }
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
       {properties.map((property) => (
         <CardProperty key={property.id} property={property} />
       ))}

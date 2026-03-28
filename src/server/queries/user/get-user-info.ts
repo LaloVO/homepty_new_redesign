@@ -3,12 +3,21 @@ import { verifySession } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { QueryResponse, User } from "@/types";
 
-export async function getUserInfo(): Promise<QueryResponse<User>> {
+export type UserWithLocation = User & {
+  estados?: { nombre_estado: string } | null;
+  ciudades?: { nombre_ciudad: string } | null;
+};
+
+export async function getUserInfo(): Promise<QueryResponse<UserWithLocation>> {
   const supabase = await createClient();
   const { userId } = await verifySession();
   const { data, error } = await supabase
     .from("usuarios")
-    .select("*")
+    .select(`
+      *,
+      estados (nombre_estado),
+      ciudades (nombre_ciudad)
+    `)
     .eq("id", userId)
     .single();
 
@@ -22,6 +31,6 @@ export async function getUserInfo(): Promise<QueryResponse<User>> {
   return {
     ok: true,
     message: "Usuario actual obtenido correctamente.",
-    data: data,
+    data: data as UserWithLocation,
   };
 }
